@@ -4,7 +4,7 @@ import React from 'react'
 
 const NewLocation = (props) => {
     const [formData, setformData] = React.useState(
-        { longitude: "", latitude: "", nimi: "" })
+        { longitude: "", latitude: "", name: "" })
 
     function handleChange(event) {
         setformData(prevData => {
@@ -16,19 +16,32 @@ const NewLocation = (props) => {
     }
 
     function addUusObjekt() {
+
+        if (isNaN(formData.longitude) || isNaN(formData.latitude)) {
+            return alert("longitude ja latitude peavad olema number väärtused")
+        } else {
+            props.setLocations([
+                ...props.locations,
+                formData]
+            )
+        }
+        console.log(formData)
+    }
+
+    /* function deleteAsukoht() {
         props.setLocations([
             ...props.locations,
             formData]
         )
         console.log(formData)
-    }
+    } */
 
     return (
         <div className="newLOcation">
             <h3>Locations</h3>
             {props.locations.map((location) => (
                 <div key={location.name}>
-                    <a onClick={() => props.selectLocation(location)}>{location.name}</a>
+                    <a onClick={() => props.selectLocation(location)}>{location.name}{/*<h5 onClick={() => deleteAsukoht()}>X</h5>*/}</a>
                 </div>
             ))}
             <h3>New location</h3>
@@ -52,8 +65,8 @@ const NewLocation = (props) => {
                     type="text"
                     placeholder='nimi'
                     onChange={handleChange}
-                    name="nimi"
-                    value={formData.nimi}
+                    name="name"
+                    value={formData.name}
                 />
                 <button onClick={addUusObjekt}>Add location</button>
 
